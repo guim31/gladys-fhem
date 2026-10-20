@@ -1,0 +1,710 @@
+{
+  "Arg": "",
+  "Results": [
+    {
+      "Name": "Cache",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-e9a3-1bad2f7f0101fda5",
+        "NAME": "Cache",
+        "NR": "53",
+        "STATE": "???",
+        "TYPE": "dummy"
+      },
+      "Readings": {},
+      "Attributes": {
+        "room": "hidden"
+      }
+    },
+    {
+      "Name": "Compteur",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78f29-f33f-a0ae-f164-4c16a52128effae5",
+        "NAME": "Compteur",
+        "NR": "57",
+        "STATE": "1520 W",
+        "TYPE": "dummy",
+        "eventCount": "3"
+      },
+      "Readings": {
+        "energy": {
+          "Value": "4567.8",
+          "Time": "2026-10-20 17:56:25"
+        },
+        "power": {
+          "Value": "1520",
+          "Time": "2026-10-20 17:56:25"
+        },
+        "state": {
+          "Value": "1520 W",
+          "Time": "2026-10-20 17:56:25"
+        }
+      },
+      "Attributes": {}
+    },
+    {
+      "Name": "DockerImageInfo",
+      "PossibleSets": "",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d2c-f33f-a0ae-eefa-68054ee2e51dde5f",
+        "INFO_DIR": "/tmp",
+        "NAME": "DockerImageInfo",
+        "NR": "42",
+        "NTFY_ORDER": "50-DockerImageInfo",
+        "RESULT_FILE": "/tmp/health-check.result",
+        "STATE": "ok (1 successful,  0 failed)",
+        "TYPE": "DockerImageInfo",
+        "URL_FILE": "/tmp/health-check.urls",
+        "eventCount": "1"
+      },
+      "Readings": {
+        "container.cap.e": {
+          "Value": "audit_write,chown,dac_override,fowner,fsetid,kill,mknod,net_bind_service,net_raw,setfcap,setgid,setpcap,setuid,sys_chroot",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "container.cap.i": {
+          "Value": "none",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "container.cap.p": {
+          "Value": "audit_write,chown,dac_override,fowner,fsetid,kill,mknod,net_bind_service,net_raw,setfcap,setgid,setpcap,setuid,sys_chroot",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "container.hostname": {
+          "Value": "567f4336d3bd",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "container.hostnetwork": {
+          "Value": "0",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "container.privileged": {
+          "Value": "0",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "container.runtime": {
+          "Value": "docker",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "containerized": {
+          "Value": "1",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "id.gid": {
+          "Value": "6061",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "id.gname": {
+          "Value": "fhem",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "id.groups": {
+          "Value": "[ \"fhem\": 6061, \"tty\": 5, \"mail\": 8, \"dialout\": 20, \"audio\": 29, \"video\": 44, \"bluetooth\": 6001, \"gpio\": 6002 ]",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "id.uid": {
+          "Value": "6061",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "id.uname": {
+          "Value": "fhem",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.created": {
+          "Value": "2026-10-16T19:57:15.693Z",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.description": {
+          "Value": "A full blown Docker image for FHEM house automation system, based on Debian Perl -bookworm.",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.documentation": {
+          "Value": "https://github.com/fhem/fhem-docker/blob/04e2a71ca29101f66feea237a65bca1516c7fdc1/README.md",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.licenses": {
+          "Value": "MIT",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.revision": {
+          "Value": "04e2a71ca29101f66feea237a65bca1516c7fdc1",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.source": {
+          "Value": "https://github.com/fhem/fhem-docker/",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.title": {
+          "Value": "fhem",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.url": {
+          "Value": "https://hub.docker.com/r/fhem/fhem",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.vendor": {
+          "Value": "FHEM",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "image.version": {
+          "Value": "5.5.0-bookworm",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "model": {
+          "Value": "runtime=docker; image.title=fhem; image.version=5.5.0-bookworm; image.source=https://github.com/fhem/fhem-docker/",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "ssh-id_ed25519.pub": {
+          "Value": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNnxzC9EpkatN7zVBwZsBal0t0CrCpGAy//bvH0+YIk fhem@fhem-docker",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "ssh-id_rsa.pub": {
+          "Value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCoqd3pWl5HT5Jyn+1kARg1Hph9QoJue/hxgeBU/+LQcrGBk4gcNfOxILvLtIwdzAlgi4lhzOtnCvpiWNVLjmFyksod+IfagK3mFQi6tGmXkarVfwMW0qCKYRSA8Xsa94kRuB/wnKQeGONWh+wKXPSanG795ldzQZX5NbHP3ykE3f9kU9VPy+udycod8bx032fv/HiFthHkUVoxSY9w5wtJBqRf3cio2gJdfkdMRJqcvrcs2hNrGrkqDHOxuja58heTj44zJCqLZ7mulaQTzIoNb5+p65acWt/IXyvELVpxTj0UPWqfFdrgf+K5uwyS75MVSGuHMFVHhSodMmsGJFUfS4tjK21+AFT0Y4z2K4YhLigTNXrRMPVKbdJjWRb9EpBm0j35BqGQojsOo5ed/6WK6sNCHAVbgOnUCN2AclgLLDh2ucePrf774dP8LI2+RDkAokZImZxWq0YoWZmdcRlCmQa/Mr+o3PSB56mExjXfAvCmvoy65XZJ3cbvv5UQtuu/UvKm+aPpaw+8tsThmR6m8vdIcWLRK2BmCPWDMEElM9vfqd+dQJYLRp6IQAbiHf0yVA7VaEZsH5RHt36FTaQjPQetr63UQH+1jvfWcaqN8UEuUXDq0/zUFLKCu15AfDbylMwFnU3LsVN8CNY1efQ0SKzYf05HiI2NQnaJXpDOuw== fhem@fhem-docker",
+          "Time": "2026-10-20 17:47:56"
+        },
+        "sudoers": {
+          "Value": "[ \"#\", \"# Allow installation of new packages\", \"# Allow updates\", \"# Auto-generated during container start\", \"fhem ALL=(ALL) NOPASSWD:SETENV: /usr/bin/npm install *\", \"fhem ALL=(ALL) NOPASSWD:SETENV: /usr/bin/npm uninstall *\", \"fhem ALL=(ALL) NOPASSWD:SETENV: /usr/bin/npm update *\", \"fhem ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/cpanm *\", \"fhem ALL=(ALL) NOPASSWD: /usr/bin/apt-get -q update\", \"fhem ALL=(ALL) NOPASSWD: /usr/bin/apt-get -s -q -V upgrade\", \"fhem ALL=(ALL) NOPASSWD: /usr/bin/apt-get -y install *\", \"fhem ALL=(ALL) NOPASSWD: /usr/bin/apt-get -y -q -V upgrade\", \"fhem ALL=(ALL) NOPASSWD: /usr/bin/nmap\", \"# required by modules\" ]",
+          "Time": "2026-10-20 17:47:56"
+        }
+      },
+      "Attributes": {
+        "alias": "Docker Image Info",
+        "devStateIcon": "^ok.*:security@green Initialized:system_fhem_reboot@orange .*:message_attention@red",
+        "group": "System",
+        "icon": "docker",
+        "room": "System"
+      }
+    },
+    {
+      "Name": "Fenetre_Cuisine",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78f29-f33f-a0ae-1e58-f9c93ce437f323b7",
+        "NAME": "Fenetre_Cuisine",
+        "NR": "56",
+        "STATE": "open",
+        "TYPE": "dummy",
+        "eventCount": "3"
+      },
+      "Readings": {
+        "battery": {
+          "Value": "low",
+          "Time": "2026-10-20 17:56:25"
+        },
+        "contact": {
+          "Value": "open",
+          "Time": "2026-10-20 17:56:25"
+        },
+        "state": {
+          "Value": "open",
+          "Time": "2026-10-20 17:56:25"
+        }
+      },
+      "Attributes": {
+        "room": "Cuisine"
+      }
+    },
+    {
+      "Name": "Lampe_Salon",
+      "PossibleSets": "on off",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d43-f33f-a0ae-e045-25a8c87b3f6fc44b",
+        "NAME": "Lampe_Salon",
+        "NR": "43",
+        "STATE": "off",
+        "TYPE": "dummy",
+        "eventCount": "4"
+      },
+      "Readings": {
+        "state": {
+          "Value": "off",
+          "Time": "2026-10-20 17:49:12"
+        }
+      },
+      "Attributes": {
+        "alias": "Lampe du salon",
+        "genericDeviceType": "light",
+        "room": "Salon,Rez",
+        "setList": "on off"
+      }
+    },
+    {
+      "Name": "Logfile",
+      "PossibleSets": "clear:noArg",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  acceptedRange addLog addStateEvent:0,1 archiveCompress archivecmd archivedir createGluedFile:0,1 disable:0,1 disabledForIntervals eventOnThreshold filelog-event-min-interval ignoreRegexp label logtype mseclog:1,0 nrarchive outputFormat reformatFn genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "DEF": "./log/fhem-%Y-%m-%d.log Logfile",
+        "FH": "null",
+        "FUUID": "6ad78d2b-f33f-a0ae-83d9-29e5f6bc11c58681",
+        "NAME": "Logfile",
+        "NOTIFYDEV": "Logfile",
+        "NR": "34",
+        "NTFY_ORDER": "50-Logfile",
+        "READONLY": "1",
+        "REGEXP": "Logfile",
+        "STATE": "active",
+        "TYPE": "FileLog",
+        "currentlogfile": "./log/fhem-2026-10-20.log",
+        "logfile": "./log/fhem-%Y-%m-%d.log"
+      },
+      "Readings": {},
+      "Attributes": {}
+    },
+    {
+      "Name": "Mode_Alarme",
+      "PossibleSets": "armed disarmed",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-9316-d5b99231b897c86b",
+        "NAME": "Mode_Alarme",
+        "NR": "52",
+        "STATE": "disarmed",
+        "TYPE": "dummy",
+        "eventCount": "1"
+      },
+      "Readings": {
+        "state": {
+          "Value": "disarmed",
+          "Time": "2026-10-20 17:48:20"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "security",
+        "setList": "armed disarmed"
+      }
+    },
+    {
+      "Name": "Mouvement_Couloir",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-d3ed-0263414991ac46fe",
+        "NAME": "Mouvement_Couloir",
+        "NR": "49",
+        "STATE": "motion",
+        "TYPE": "dummy",
+        "eventCount": "1"
+      },
+      "Readings": {
+        "state": {
+          "Value": "motion",
+          "Time": "2026-10-20 17:48:20"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "motion",
+        "room": "Couloir"
+      }
+    },
+    {
+      "Name": "Notif",
+      "PossibleSets": "active:noArg addRegexpPart inactive:noArg removeRegexpPart ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  addStateEvent:1,0 disable:1,0 disabledForIntervals disabledAfterTrigger forwardReturnValue:1,0 ignoreRegexp readLog:1,0 setList showtime:1,0 event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "DEF": "Lampe_Salon:on {}",
+        "FUUID": "6ad78f29-f33f-a0ae-e112-d6c5c080b9b5a29f",
+        "NAME": "Notif",
+        "NOTIFYDEV": "Lampe_Salon",
+        "NR": "58",
+        "NTFY_ORDER": "50-Notif",
+        "REGEXP": "Lampe_Salon:on",
+        "STATE": "active",
+        "TYPE": "notify",
+        "eventCount": "1"
+      },
+      "Readings": {
+        "state": {
+          "Value": "active",
+          "Time": "2026-10-20 17:56:25"
+        }
+      },
+      "Attributes": {}
+    },
+    {
+      "Name": "Porte_Entree",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-b6f2-89c2883f848f2bba",
+        "NAME": "Porte_Entree",
+        "NR": "48",
+        "STATE": "closed",
+        "TYPE": "dummy",
+        "eventCount": "1"
+      },
+      "Readings": {
+        "state": {
+          "Value": "closed",
+          "Time": "2026-10-20 17:48:20"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "contact",
+        "room": "Entree"
+      }
+    },
+    {
+      "Name": "Prise_Bureau",
+      "PossibleSets": "on off",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d43-f33f-a0ae-e4a5-62cd7e6434943e54",
+        "NAME": "Prise_Bureau",
+        "NR": "44",
+        "STATE": "on",
+        "TYPE": "dummy",
+        "eventCount": "3"
+      },
+      "Readings": {
+        "energy": {
+          "Value": "123.456",
+          "Time": "2026-10-20 17:48:19"
+        },
+        "power": {
+          "Value": "42.5",
+          "Time": "2026-10-20 17:48:19"
+        },
+        "state": {
+          "Value": "on",
+          "Time": "2026-10-20 17:48:19"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "switch",
+        "room": "Bureau",
+        "setList": "on off"
+      }
+    },
+    {
+      "Name": "Serrure",
+      "PossibleSets": "lock unlock",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-74c5-e9143efaf235e339",
+        "NAME": "Serrure",
+        "NR": "51",
+        "STATE": "locked",
+        "TYPE": "dummy",
+        "eventCount": "1"
+      },
+      "Readings": {
+        "state": {
+          "Value": "locked",
+          "Time": "2026-10-20 17:48:20"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "lock",
+        "setList": "lock unlock"
+      }
+    },
+    {
+      "Name": "Sonde_Jardin",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-5d4c-10fc3a03cb6edebb",
+        "NAME": "Sonde_Jardin",
+        "NR": "50",
+        "STATE": "T: 12.3 H: 81",
+        "TYPE": "dummy",
+        "eventCount": "5"
+      },
+      "Readings": {
+        "battery": {
+          "Value": "ok",
+          "Time": "2026-10-20 17:48:20"
+        },
+        "humidity": {
+          "Value": "81",
+          "Time": "2026-10-20 17:48:20"
+        },
+        "state": {
+          "Value": "T: 12.3 H: 81",
+          "Time": "2026-10-20 17:48:20"
+        },
+        "temperature": {
+          "Value": "12.9",
+          "Time": "2026-10-20 17:49:12"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "sensor",
+        "room": "Jardin,Exterieur"
+      }
+    },
+    {
+      "Name": "Telephone_Alice",
+      "PossibleSets": " ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78f29-f33f-a0ae-f437-f01c91e45d24195b",
+        "NAME": "Telephone_Alice",
+        "NR": "55",
+        "STATE": "present",
+        "TYPE": "dummy",
+        "eventCount": "2"
+      },
+      "Readings": {
+        "presence": {
+          "Value": "present",
+          "Time": "2026-10-20 17:56:25"
+        },
+        "state": {
+          "Value": "present",
+          "Time": "2026-10-20 17:56:25"
+        }
+      },
+      "Attributes": {
+        "room": "Maison"
+      }
+    },
+    {
+      "Name": "Thermostat_Salon",
+      "PossibleSets": "desired-temp:slider,5,0.5,30",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-bcc7-357fdc3e09a1a55f",
+        "NAME": "Thermostat_Salon",
+        "NR": "47",
+        "STATE": "nonsense 1",
+        "TYPE": "dummy",
+        "eventCount": "5"
+      },
+      "Readings": {
+        "desired-temp": {
+          "Value": "20.5",
+          "Time": "2026-10-20 17:49:02"
+        },
+        "humidity": {
+          "Value": "48",
+          "Time": "2026-10-20 17:48:20"
+        },
+        "measured-temp": {
+          "Value": "19.8",
+          "Time": "2026-10-20 17:48:20"
+        },
+        "state": {
+          "Value": "nonsense 1",
+          "Time": "2026-10-20 17:49:02"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "thermostat",
+        "readingList": "desired-temp",
+        "room": "Salon",
+        "setList": "desired-temp:slider,5,0.5,30"
+      }
+    },
+    {
+      "Name": "Variateur",
+      "PossibleSets": "on off pct:slider,0,1,100",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d43-f33f-a0ae-f870-939b94bb34ce8426",
+        "NAME": "Variateur",
+        "NR": "45",
+        "STATE": "pct 40",
+        "TYPE": "dummy",
+        "eventCount": "2"
+      },
+      "Readings": {
+        "pct": {
+          "Value": "40",
+          "Time": "2026-10-20 17:49:02"
+        },
+        "state": {
+          "Value": "pct 40",
+          "Time": "2026-10-20 17:48:20"
+        }
+      },
+      "Attributes": {
+        "readingList": "pct",
+        "room": "Cuisine",
+        "setList": "on off pct:slider,0,1,100"
+      }
+    },
+    {
+      "Name": "Volet_Chambre",
+      "PossibleSets": "up down stop pct:slider,0,1,100",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable disabledForIntervals readingList setExtensionsEvent:1,0 setList useSetExtensions event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "CFGFN": "",
+        "FUUID": "6ad78d44-f33f-a0ae-04fd-0729336c4124bd1a",
+        "NAME": "Volet_Chambre",
+        "NR": "46",
+        "STATE": "pct 30",
+        "TYPE": "dummy",
+        "eventCount": "3"
+      },
+      "Readings": {
+        "pct": {
+          "Value": "55",
+          "Time": "2026-10-20 17:49:12"
+        },
+        "state": {
+          "Value": "pct 30",
+          "Time": "2026-10-20 17:48:20"
+        }
+      },
+      "Attributes": {
+        "genericDeviceType": "blind",
+        "readingList": "pct",
+        "room": "Chambre",
+        "setList": "up down stop pct:slider,0,1,100"
+      }
+    },
+    {
+      "Name": "WEB",
+      "PossibleSets": "clearSvgCache:noArg pushNotify reopen:noArg rereadicons:noArg",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  addHtmlTitle:1,0 additionalInform addStateEvent alarmTimeout allowedHttpMethods allowedroom allowfrom closeConn:1,0 column confirmDelete:0,1 confirmJSError:0,1 CORS:0,1 csrfToken csrfTokenHTTPHeader:0,1 CssFiles Css:textField-long defaultRoom detailLinks deviceOverview:always,iconOnly,onClick,never editConfig:1,0 editFileList:textField-long endPlotNow:1,0 endPlotNowByHour:1,0 endPlotToday:1,0 extraRooms:textField-long forbiddenroom hiddengroup hiddengroupRegexp hiddenroom hiddenroomRegexp htmlInEventMonitor:1,0 httpHeader HTTPS:1,0 iconPath JavaScripts jsLog:1,0 logDevice logFormat longpoll:0,1,websocket longpollSVG:1,0 mainInputLength menuEntries nameDisplay nrAxis ploteditor:always,onClick,never plotEmbed:2,1,0 plotfork:1,0 plotmode:gnuplot-scroll,gnuplot-scroll-svg,SVG plotsize plotWeekStartDay:0,1,2,3,4,5,6 publicHostnames redirectCmds:0,1 redirectTo refresh reverseLogs:0,1 roomIcons:textField-long showUsedFiles:0,1 smallscreenCommands:0,1 smallscreen:unused sortRooms sslCertPrefix sslVersion styleData:textField-long stylesheetPrefix SVGcache:1,0 title touchpad:unused viewport webname webPushPort genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor DockerHealthCheck:0,1",
+      "Internals": {
+        "BYTES_READ": "19425",
+        "BYTES_WRITTEN": "203055",
+        "CONNECTS": "138",
+        "CSRFTOKEN": "csrf_000000000000000",
+        "DEF": "8083 global",
+        "FD": "5",
+        "FUUID": "6ad78d2b-f33f-a0ae-6313-b4b373a41a3841a2",
+        "NAME": "WEB",
+        "NR": "31",
+        "NTFY_ORDER": "50-WEB",
+        "PORT": "8083",
+        "STATE": "Initialized",
+        "TYPE": "FHEMWEB"
+      },
+      "Readings": {
+        "state": {
+          "Value": "Initialized",
+          "Time": "2026-10-20 17:47:55"
+        }
+      },
+      "Attributes": {
+        "userattr": "DockerHealthCheck:0,1"
+      }
+    },
+    {
+      "Name": "autocreate",
+      "PossibleSets": "",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  autocreateThreshold autosave device_room disable filelog ignoreTypes weblink weblink_room genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "FUUID": "6ad78d2b-f33f-a0ae-255f-cbe15d1742aa4416",
+        "NAME": "autocreate",
+        "NOTIFYDEV": "global",
+        "NR": "36",
+        "NTFY_ORDER": "50-autocreate",
+        "STATE": "active",
+        "TYPE": "autocreate"
+      },
+      "Readings": {},
+      "Attributes": {
+        "filelog": "./log/%NAME-%Y.log"
+      }
+    },
+    {
+      "Name": "eventTypes",
+      "PossibleSets": "clear:noArg flush:noArg",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  disable:0,1 ignoreList genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "DEF": "./log/eventTypes.txt",
+        "FUUID": "6ad78d2b-f33f-a0ae-6c9d-1360d367833305cb",
+        "NAME": "eventTypes",
+        "NR": "38",
+        "NTFY_ORDER": "50-eventTypes",
+        "STATE": "active",
+        "TYPE": "eventTypes"
+      },
+      "Readings": {},
+      "Attributes": {}
+    },
+    {
+      "Name": "global",
+      "PossibleSets": "",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  altitude archivecmd archivedir archivesort:timestamp,alphanum archiveCompress autoload_undefined_devices:0,1 autosave:1,0 backup_before_update backupcmd backupdir backupsymlink blockingCallMax commandref:modular,full configfile disableFeatures:multiple-strict,attrTemplate,securityCheck,saveuuid dnsHostsFile dnsServer dupTimeout exclude_from_update encoding:bytestream,unicode hideExcludedUpdates:1,0 featurelevel:6.1,6.0,5.9,5.8,5.7,5.6,5.5,99.99 genericDisplayType:switch,outlet,light,blind,speaker,thermostat holiday2we httpcompress:0,1 ignoreRegexp keyFileName language:EN,DE lastinclude latitude logdir logfile longitude maxChangeLog maxShutdownDelay modpath motd mseclog:1,0 nofork:1,0 nrarchive perlSyntaxCheck:0,1 pidfilename proxy proxyAuth proxyExclude restartDelay restoreDirs sendStatistics:onUpdate,manually,never showInternalValues:1,0 sslVersion stacktrace:1,0 statefile title updateInBackground:1,0 updateNoFileCheck:1,0 useInet6:1,0 version genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "DEF": "no definition",
+        "FD": "3",
+        "NAME": "global",
+        "NR": "1",
+        "STATE": "no definition",
+        "TYPE": "Global",
+        "currentlogfile": "log/fhem-2026-10-20.log",
+        "eventCount": "52",
+        "init_errors": "Messages collected while initializing FHEM:configfile: logfile is readonly, it is set in the FHEM_GLOBALATTR environment\nSecurityCheck:\n  WEB is not password protected\n\nProtect this FHEM installation by defining an allowed device with define allowed allowed\nYou can disable this message with attr global motd none\nAutosave deactivated",
+        "logfile": "log/fhem-%Y-%m-%d.log"
+      },
+      "Readings": {},
+      "Attributes": {
+        "autoload_undefined_devices": "1",
+        "autosave": "0",
+        "commandref": "modular",
+        "configfile": "fhem.cfg",
+        "dnsServer": "127.0.0.11",
+        "logfile": "log/fhem-%Y-%m-%d.log",
+        "modpath": ".",
+        "mseclog": "1",
+        "nofork": "0",
+        "pidfilename": "log/fhem.pid",
+        "statefile": "./log/fhem.save",
+        "updateInBackground": "1",
+        "userattr": "genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+        "verbose": "3",
+        "version": "fhem.pl:31759/2026-10-10"
+      }
+    },
+    {
+      "Name": "initialUsbCheck",
+      "PossibleSets": "active:noArg addRegexpPart inactive:noArg removeRegexpPart ",
+      "PossibleAttrs": "alias comment:textField-long eventMap:textField-long group room suppressReading userattr userReadings:textField-long verbose:0,1,2,3,4,5  addStateEvent:1,0 disable:1,0 disabledForIntervals disabledAfterTrigger forwardReturnValue:1,0 ignoreRegexp readLog:1,0 setList showtime:1,0 event-aggregator event-min-interval event-on-change-reading event-on-update-reading oldreadings stateFormat:textField-long timestamp-on-change-reading genericDeviceType:security,ignore,switch,outlet,light,blind,thermometer,thermostat,contact,garage,window,lock,motion,sensor",
+      "Internals": {
+        "DEF": "global:INITIALIZED usb create",
+        "FUUID": "6ad78d2b-f33f-a0ae-3aa9-e23b568e0fc83e51",
+        "NAME": "initialUsbCheck",
+        "NOTIFYDEV": "global",
+        "NR": "41",
+        "NTFY_ORDER": "50-initialUsbCheck",
+        "REGEXP": "global:INITIALIZED",
+        "STATE": "2026-10-20 17:47:55",
+        "TRIGGERTIME": "1792511275.67161",
+        "TYPE": "notify"
+      },
+      "Readings": {
+        "state": {
+          "Value": "active",
+          "Time": "2026-10-20 17:47:55"
+        },
+        "triggeredByDev": {
+          "Value": "global",
+          "Time": "2026-10-20 17:47:55"
+        },
+        "triggeredByEvent": {
+          "Value": "INITIALIZED",
+          "Time": "2026-10-20 17:47:55"
+        }
+      },
+      "Attributes": {}
+    }
+  ],
+  "totalResultsReturned": 23
+}
