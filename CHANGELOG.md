@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-20
+
 ### Added
 
 - FHEM bridge: the devices of a FHEM server, read through FHEMWEB, offered in
@@ -30,4 +32,5 @@ the notes of the version's GitHub Release.
   a reload button, and a "Test the connection" action.
 - English, French, German and Spanish.
 
-[Unreleased]: https://github.com/guim31/gladys-fhem/commits/main
+[Unreleased]: https://github.com/guim31/gladys-fhem/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-fhem/releases/tag/v1.0.0
