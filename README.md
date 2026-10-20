@@ -26,7 +26,8 @@ affiliated with the FHEM project.
   15 minutes (FHEMWEB says nothing on a quiet stream), and polling every 30 s
   when it does not get through (reverse proxy).
 - **Safety**: locks, garage doors and alarms are read-only unless allowed; a
-  scene cannot get around it. The scene action only runs a `set`: no `;`, no
+  scene action checks the device it targets, and a `structure` or `LightScene`
+  holding one. The scene action only runs a `set`: no `;`, no
   Perl.
 - **Scene trigger** "FHEM device changed" for the watched devices, **scene
   action** "send a command to a FHEM device", a **dashboard widget** with the

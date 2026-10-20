@@ -51,10 +51,32 @@ export class WriteError extends Error {
 // --- Device helpers ---------------------------------------------------------------
 
 export const typeOf = (device) => String(device?.Internals?.TYPE ?? '');
-export const genericType = (device) =>
-  String(device?.Attributes?.genericDeviceType ?? '')
+/** HomeMatic (CUL_HM, HMCCU) channel kinds, when genericDeviceType is not set. */
+const SUBTYPES = {
+  blindactuator: 'blind',
+  dimmer: 'light',
+  switch: 'switch',
+  threestatesensor: 'contact',
+  motiondetector: 'motion',
+  shuttercontact: 'contact',
+};
+
+/**
+ * The kind of a device: its genericDeviceType, else the HomeMatic subType
+ * (a HomeMatic blind has on/off/up/down/pct like a dimmer), else MAX's type.
+ */
+export const genericType = (device) => {
+  const gdt = String(device?.Attributes?.genericDeviceType ?? '')
     .trim()
     .toLowerCase();
+  if (gdt) {
+    return gdt;
+  }
+  const sub = String(device?.Attributes?.subType ?? device?.Internals?.type ?? '')
+    .trim()
+    .toLowerCase();
+  return SUBTYPES[sub] ?? '';
+};
 
 /** The current value of a reading, as text; undefined when the device has none. */
 export const readingOf = (device, name) => {
@@ -148,16 +170,22 @@ export function readOnOff(text) {
   return null;
 }
 
-const OPEN_WORDS = new Set(['open', 'opened', 'tilted', 'offen', 'gekippt', 'on', '1', 'true']);
-const CLOSED_WORDS = new Set(['closed', 'close', 'geschlossen', 'zu', 'off', '0', 'false']);
+const OPEN_OR_CLOSED = /^(open|opened|closed|tilted)\b/;
+const OPEN_WORDS = new Set(['open', 'opened', 'tilted', 'offen', 'gekippt']);
+const CLOSED_WORDS = new Set(['closed', 'close', 'geschlossen', 'zu']);
 
-/** A contact: open (or tilted) -> 0, closed -> 1 (OPENING_SENSOR_STATE). */
+/**
+ * A contact: open (or tilted) -> 0, closed -> 1 (OPENING_SENSOR_STATE).
+ * "open (to VCCU)" is HomeMatic. A boolean is zigbee2mqtt (MQTT2_DEVICE),
+ * where `contact: true` means the contact is made: CLOSED. on/off and 0/1
+ * mean opposite things from one module to the next: not read.
+ */
 export function readContact(text) {
   const w = word(text).split(/[\s(]/)[0];
-  if (OPEN_WORDS.has(w)) {
+  if (OPEN_WORDS.has(w) || w === 'false') {
     return OPENING_SENSOR_STATE.OPEN;
   }
-  if (CLOSED_WORDS.has(w)) {
+  if (CLOSED_WORDS.has(w) || w === 'true') {
     return OPENING_SENSOR_STATE.CLOSE;
   }
   return null;
@@ -177,8 +205,10 @@ const NO_MOTION_WORDS = new Set([
   'no',
 ]);
 
+/** "motion", "on (to VCCU)" (HomeMatic), "nomotion"... */
 export function readMotion(text) {
-  const w = word(text);
+  const whole = word(text);
+  const w = NO_MOTION_WORDS.has(whole) ? whole : whole.split(/[\s(]/)[0];
   if (MOTION_WORDS.has(w)) {
     return 1;
   }
@@ -188,7 +218,7 @@ export function readMotion(text) {
   return null;
 }
 
-/** PRESENCE, ROOMMATE, RESIDENTS: present/absent (home/gone/away...). */
+/** PRESENCE, ROOMMATE, GUEST (and RESIDENTS through its presence reading): present/absent (home/gone/away...). */
 export function readPresence(text) {
   const w = word(text);
   if (['present', 'home', 'awoken', 'asleep', 'gotosleep', 'on', '1'].includes(w)) {
@@ -286,13 +316,25 @@ export const MEASUREMENTS = [
   },
   {
     role: 'battery',
-    readings: ['batteryPercent', 'batteryLevel', 'battery'],
+    readings: ['batteryPercent', 'battery', 'batteryLevel'],
     spec: { category: C.BATTERY, type: T.BATTERY.INTEGER, unit: U.PERCENT },
     min: 0,
     max: 100,
     integer: true,
   },
 ];
+
+/**
+ * Whether a reading can feed a role. HomeMatic writes `batteryLevel` in volts
+ * (2.7): a percentage only when it says so or is beyond any battery voltage.
+ */
+function usable(role, reading, value) {
+  if (role === 'battery' && reading === 'batteryLevel') {
+    const n = parseNumber(value);
+    return n !== null && (/%/.test(value) || n > 5);
+  }
+  return true;
+}
 
 // --- Kinds of devices -------------------------------------------------------------
 
@@ -368,7 +410,19 @@ export function mapDevice(device, options = {}) {
           has_feedback: true,
         },
         read: readLock,
-        ...(canWrite ? { write: (v) => (Number(v) === 1 ? 'lock' : 'unlock') } : {}),
+        ...(canWrite
+          ? {
+              write: (v) => {
+                if (Number(v) === 1) {
+                  return 'lock';
+                }
+                if (Number(v) === 0) {
+                  return 'unlock';
+                }
+                throw new WriteError('unsupported_value');
+              },
+            }
+          : {}),
       });
     }
   }
@@ -467,8 +521,8 @@ export function mapDevice(device, options = {}) {
         category: C.THERMOSTAT,
         type: T.THERMOSTAT.TARGET_TEMPERATURE,
         unit: U.CELSIUS,
-        min: Math.floor(bounds.min),
-        max: Math.ceil(bounds.max),
+        min: bounds.min,
+        max: bounds.max,
         read_only: !canWrite,
         has_feedback: true,
       },
@@ -493,8 +547,7 @@ export function mapDevice(device, options = {}) {
     !isLock &&
     !isBlind &&
     !NOT_SWITCHES.has(gdt) &&
-    (['switch', 'outlet', 'light'].includes(gdt) ||
-      (onOffCommands && readOnOff(readingOf(device, 'state')) !== null));
+    (['switch', 'outlet', 'light'].includes(gdt) || (gdt === '' && onOffCommands));
   let category = null;
   if (isSwitchLike && present('state')) {
     const brightness = ['pct', 'dim'].find((r) => has(r));
@@ -544,9 +597,15 @@ export function mapDevice(device, options = {}) {
   }
 
   // Contacts (doors, windows, garage doors): read only.
+  // Without a kind, a state that reads open/closed/tilted is a contact (MAX, many others).
+  const stateIsContact =
+    gdt === '' &&
+    !onOffCommands &&
+    !isLock &&
+    OPEN_OR_CLOSED.test(word(readingOf(device, 'state')));
   const contactReading = present('contact')
     ? 'contact'
-    : ['contact', 'window', 'garage'].includes(gdt) && present('state')
+    : (['contact', 'window', 'garage'].includes(gdt) || stateIsContact) && present('state')
       ? 'state'
       : undefined;
   if (contactReading && !isBlind) {
@@ -567,11 +626,15 @@ export function mapDevice(device, options = {}) {
   }
 
   // Motion and presence detectors.
-  const motionReading = present('motion')
-    ? 'motion'
-    : gdt === 'motion' && present('state')
+  // HomeMatic's motion reading never goes back to off: its state does (motion / noMotion).
+  const motionReading =
+    gdt === 'motion' && typeOf(device) === 'CUL_HM' && present('state')
       ? 'state'
-      : undefined;
+      : present('motion')
+        ? 'motion'
+        : gdt === 'motion' && present('state')
+          ? 'state'
+          : undefined;
   if (motionReading) {
     add({
       role: 'motion',
@@ -610,7 +673,7 @@ export function mapDevice(device, options = {}) {
 
   // Measurements, on any device.
   for (const m of MEASUREMENTS) {
-    const reading = m.readings.find((r) => present(r));
+    const reading = m.readings.find((r) => present(r) && usable(m.role, r, readingOf(device, r)));
     if (!reading) {
       continue;
     }
@@ -656,9 +719,13 @@ export function mapDevice(device, options = {}) {
       reading,
       spec: { ...spec, min: m.min, max: m.max, read_only: true, has_feedback: false },
       read: (text) => {
-        const n = parseNumber(text);
+        let n = parseNumber(text);
         if (n === null) {
           return null;
+        }
+        // HomeMatic meters write "1234.5 Wh": Gladys gets kWh.
+        if (m.role === 'energy' && /\d\s*Wh\s*$/.test(text)) {
+          n /= 1000;
         }
         return m.integer ? Math.round(n) : n;
       },

@@ -41,6 +41,8 @@ const SILENT_TYPES = new Set([
   'holiday',
 ]);
 
+const GROUP_TYPES = new Set(['structure', 'LightScene']);
+
 /**
  * @param {object[]} list jsonlist2 Results
  * @param {object} options the normalized configuration (src/config.js) + { externalIds }
@@ -120,6 +122,17 @@ export function buildInventory(list, options) {
     }
     routes.set(name, deviceRoutes);
     devices.push(device);
+  }
+
+  // A structure or a LightScene passes its commands to its members: one that
+  // holds a lock, a garage door or an alarm is a security device too.
+  for (const fhem of all) {
+    if (GROUP_TYPES.has(typeOf(fhem))) {
+      const members = String(fhem.Internals?.DEF ?? '').split(/[\s,:]+/);
+      if (members.some((m) => security.has(m))) {
+        security.add(fhem.Name);
+      }
+    }
   }
 
   return {

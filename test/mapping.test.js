@@ -178,3 +178,70 @@ test('the inform stream: one JSON array per line, cut anywhere', () => {
     ['Lampe_Salon-state-ts', '2026-10-20 17:49:12', '2026-10-20 17:49:12'],
   ]);
 });
+
+test('HomeMatic, MAX and zigbee2mqtt devices, without genericDeviceType', () => {
+  const hmBlind = device({
+    type: 'CUL_HM',
+    sets: 'on off up down stop toggleDir pct:slider,0,1,100',
+    readings: { state: 'on', pct: '100', battery: 'ok' },
+    attributes: { subType: 'blindActuator' },
+  });
+  assert.deepEqual(roles(mapDevice(hmBlind)), [
+    'pct-position',
+    'state-shutter',
+    'battery-battery_low',
+  ]);
+  assert.deepEqual(
+    roles(mapDevice({ ...hmBlind, Readings: { ...hmBlind.Readings, state: { Value: '50' } } })),
+    roles(mapDevice(hmBlind)),
+    'the same features whatever the position',
+  );
+  const hmThermostat = device({
+    type: 'CUL_HM',
+    sets: 'desired-temp:off,4.5,5.0,30.5,on',
+    readings: {
+      'desired-temp': '21.0',
+      'measured-temp': '20.1',
+      batteryLevel: '2.7',
+      battery: 'ok',
+    },
+  });
+  const thermostat = mapDevice(hmThermostat);
+  assert.deepEqual(roles(thermostat), [
+    'desired-temp-target',
+    'measured-temp-temperature',
+    'battery-battery_low',
+  ]);
+  assert.equal(byRole(thermostat, 'target').spec.min, 4.5);
+  assert.equal(byRole(thermostat, 'target').write(4.5), 'desired-temp 4.5');
+  const hmPlug = device({ type: 'CUL_HM', sets: 'on off', readings: { state: 'set_on' } });
+  assert.deepEqual(roles(mapDevice(hmPlug)), ['state-onoff'], 'kept while a command is pending');
+  const hmMotion = device({
+    type: 'CUL_HM',
+    readings: { state: 'noMotion', motion: 'on (to VCCU)' },
+    attributes: { subType: 'motionDetector' },
+  });
+  const [motion] = mapDevice(hmMotion);
+  assert.equal(motion.reading, 'state', 'the motion reading never goes back to off');
+  assert.equal(motion.read('noMotion'), 0);
+  assert.equal(motion.read('motion'), 1);
+  const maxWindow = device({
+    type: 'MAX',
+    readings: { state: 'opened', onoff: '1', battery: 'ok' },
+  });
+  maxWindow.Internals.type = 'ShutterContact';
+  assert.deepEqual(roles(mapDevice(maxWindow)), ['state-contact', 'battery-battery_low']);
+  const z2m = device({ type: 'MQTT2_DEVICE', readings: { contact: 'true' } });
+  assert.equal(mapDevice(z2m)[0].read('true'), OPENING_SENSOR_STATE.CLOSE, 'contact made: closed');
+  assert.equal(mapDevice(z2m)[0].read('false'), OPENING_SENSOR_STATE.OPEN);
+  const meter = device({ readings: { energy: '1234.5 Wh', power: '12 W' } });
+  assert.equal(byRole(mapDevice(meter), 'energy').read('1234.5 Wh'), 1.2345);
+  assert.equal(byRole(mapDevice(meter), 'energy').read('3.2 kWh'), 3.2);
+});
+
+test('a lock command is 0 or 1, nothing else', () => {
+  const lock = device({ sets: 'lock unlock', readings: { state: 'locked' } });
+  const [feature] = mapDevice(lock, { allowSecurity: true });
+  assert.throws(() => feature.write(Number.NaN), /unsupported_value/);
+  assert.throws(() => feature.write(2), /unsupported_value/);
+});

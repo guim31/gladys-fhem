@@ -76,20 +76,20 @@ Each FHEM device is offered once in the **Discovery** tab, named after its
 device comes from its `genericDeviceType` attribute when it is set, else from
 its commands (`PossibleSets`) and readings:
 
-| FHEM                                                        | Gladys                                                |
-| ----------------------------------------------------------- | ----------------------------------------------------- |
-| `genericDeviceType` `light`, or `on`/`off` with `pct`/`dim` | light: on/off, brightness                             |
-| `genericDeviceType` `switch`/`outlet`, or `on`/`off`        | switch: on/off                                        |
-| `genericDeviceType` `blind`, or `up`/`down`/`stop`          | shutter: position (`pct`), open/close/stop            |
-| `desired-temp` (thermostats)                                | thermostat setpoint, within the bounds FHEM gives     |
-| `genericDeviceType` `contact`/`window`/`garage`, `contact`  | opening sensor (open, tilted: open)                   |
-| `genericDeviceType` `motion`, reading `motion`              | motion sensor                                         |
-| reading `presence`, PRESENCE and ROOMMATE devices           | presence sensor                                       |
-| `genericDeviceType` `lock`, `lock`/`unlock` commands        | lock (read-only by default)                           |
-| readings `temperature`/`measured-temp`, `humidity`          | temperature (°C), humidity (%)                        |
-| readings `pressure`, `co2`, `luminance`/`illuminance`       | pressure (hPa), CO2 (ppm), illuminance (lux)          |
-| readings `power`, `energy`                                  | power (W), energy (kWh): of the switch, or of a meter |
-| reading `battery` (`ok`/`low` or %), `batteryPercent`       | low battery, or battery level (%)                     |
+| FHEM                                                                                             | Gladys                                                |
+| ------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| `genericDeviceType` `light`, or `on`/`off` with `pct`/`dim`                                      | light: on/off, brightness                             |
+| `genericDeviceType` `switch`/`outlet`, or `on`/`off`                                             | switch: on/off                                        |
+| `genericDeviceType` `blind`, HomeMatic `blindActuator`, or `up`/`down`/`stop` without `on`/`off` | shutter: position (`pct`), open/close/stop            |
+| `desired-temp` (thermostats)                                                                     | thermostat setpoint, within the bounds FHEM gives     |
+| `genericDeviceType` `contact`/`window`/`garage`, `contact`                                       | opening sensor (open, tilted: open)                   |
+| `genericDeviceType` `motion`, reading `motion`                                                   | motion sensor                                         |
+| reading `presence`, PRESENCE and ROOMMATE devices                                                | presence sensor                                       |
+| `genericDeviceType` `lock`, `lock`/`unlock` commands                                             | lock (read-only by default)                           |
+| readings `temperature`/`measured-temp`, `humidity`                                               | temperature (°C), humidity (%)                        |
+| readings `pressure`, `co2`, `luminance`/`illuminance`                                            | pressure (hPa), CO2 (ppm), illuminance (lux)          |
+| readings `power`, `energy`                                                                       | power (W), energy (kWh): of the switch, or of a meter |
+| reading `battery` (`ok`/`low` or %), `batteryPercent`                                            | low battery, or battery level (%)                     |
 
 A command is offered only when FHEM lists it in the commands of the device;
 otherwise the feature is read-only. Gladys sends `set <device> on`,
@@ -116,7 +116,9 @@ previous value.
 device FHEM knows, even one not added to Gladys: `on`, `off`, `pct 50`,
 `on-for-timer 300`, a scene of a `LightScene`… Only a `set`: a `;` or braces are
 refused, so a scene cannot run another FHEM command or Perl code. Locks, garage
-doors and alarms follow the security switch.
+doors and alarms follow the security switch, and so do a `structure` or a
+`LightScene` holding one. FHEM can still pass a command on by itself (a
+`notify` on a dummy): what it does with it is up to your FHEM setup.
 
 ## Scene examples
 

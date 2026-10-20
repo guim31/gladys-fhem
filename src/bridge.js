@@ -40,7 +40,7 @@ export const BRIDGE_TIMINGS = {
   // A quiet stream may be a dead one: reopened this often, the list read again.
   streamMaxAge: 15 * 60_000,
   // A stream that ends sooner without a line was not working.
-  streamMinLife: 60_000,
+  streamMinLife: 120_000,
   streamRetryMax: 5 * 60_000,
   // A command while polling: its result is read back after this delay.
   commandReadBack: 1500,
@@ -63,21 +63,12 @@ const short = (value, max = 255) => {
   return text.length > max ? text.slice(0, max) : text;
 };
 
-/** What the inventory is built from: a change here offers the devices again. */
-const structureOf = (devices) =>
-  JSON.stringify(
-    devices.map((d) => [
-      d.Name,
-      d.Internals?.TYPE,
-      d.Internals?.FUUID,
-      d.Attributes?.alias,
-      d.Attributes?.room,
-      d.Attributes?.genericDeviceType,
-      d.Attributes?.ignore,
-      d.PossibleSets,
-      Object.keys(d.Readings ?? {}).sort(),
-    ]),
-  );
+/**
+ * What Gladys is offered: a change here offers the devices again. The mapping
+ * looks at values too (a battery in % or ok/low), so it is compared on its
+ * result, not on the readings it was built from.
+ */
+const structureOf = (inventory) => JSON.stringify(inventory.devices);
 
 export class Bridge {
   constructor({
@@ -200,6 +191,7 @@ export class Bridge {
     const stream = this.stream;
     this.stream = undefined;
     this.live = false;
+    this.recycling = false;
     stream?.close();
   }
 
@@ -413,14 +405,11 @@ export class Bridge {
   }
 
   /**
-   * The stream works once it carried a line or lived a while: a proxy that
-   * accepts it and cuts it at once must not log a recovery every few seconds.
+   * The stream works again once it lived a while: a proxy that cuts a quiet
+   * stream after a minute must not log a loss and a recovery every minute.
    */
   streamWorks() {
-    if (!this.streamFailing) {
-      return;
-    }
-    if (this.streamLines === 0 && this.now() - this.streamOpenedAt < this.timings.streamMinLife) {
+    if (!this.streamFailing || this.now() - this.streamOpenedAt < this.timings.streamMinLife) {
       return;
     }
     this.streamFailing = false;
@@ -486,13 +475,14 @@ export class Bridge {
   async applyDevices(list, { force = false } = {}) {
     const previous = this.devices;
     this.devices = new Map(list.map((d) => [d.Name, d]));
-    const structure = structureOf([...this.devices.values()]);
+    // Rebuilt on every list (cheap, pure): routes and commands follow the devices.
+    this.inventory = buildInventory([...this.devices.values()], {
+      ...this.config,
+      externalIds: this.gladys.externalIds.bind(this.gladys),
+    });
+    const structure = structureOf(this.inventory);
     if (force || structure !== this.structure) {
       this.structure = structure;
-      this.inventory = buildInventory([...this.devices.values()], {
-        ...this.config,
-        externalIds: this.gladys.externalIds.bind(this.gladys),
-      });
       await this.publishDevices();
       if (!force) {
         await this.publishTransports();

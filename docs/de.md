@@ -76,20 +76,20 @@ hinzu. Die Art eines Geräts ergibt sich aus seinem Attribut
 `genericDeviceType`, wenn es gesetzt ist, sonst aus seinen Befehlen
 (`PossibleSets`) und Readings:
 
-| FHEM                                                         | Gladys                                                        |
-| ------------------------------------------------------------ | ------------------------------------------------------------- |
-| `genericDeviceType` `light`, oder `on`/`off` mit `pct`/`dim` | Lampe: Ein/Aus, Helligkeit                                    |
-| `genericDeviceType` `switch`/`outlet`, oder `on`/`off`       | Schalter: Ein/Aus                                             |
-| `genericDeviceType` `blind`, oder `up`/`down`/`stop`         | Rollladen: Position (`pct`), Öffnen/Schließen/Stopp           |
-| `desired-temp` (Thermostate)                                 | Thermostat-Sollwert, in den Grenzen, die FHEM angibt          |
-| `genericDeviceType` `contact`/`window`/`garage`, `contact`   | Öffnungssensor (offen, gekippt: offen)                        |
-| `genericDeviceType` `motion`, Reading `motion`               | Bewegungsmelder                                               |
-| Reading `presence`, PRESENCE- und ROOMMATE-Geräte            | Anwesenheitssensor                                            |
-| `genericDeviceType` `lock`, Befehle `lock`/`unlock`          | Schloss (standardmäßig nur lesend)                            |
-| Readings `temperature`/`measured-temp`, `humidity`           | Temperatur (°C), Luftfeuchtigkeit (%)                         |
-| Readings `pressure`, `co2`, `luminance`/`illuminance`        | Luftdruck (hPa), CO2 (ppm), Beleuchtungsstärke (lux)          |
-| Readings `power`, `energy`                                   | Leistung (W), Energie (kWh): des Schalters oder eines Zählers |
-| Reading `battery` (`ok`/`low` oder %), `batteryPercent`      | Batterie schwach, oder Batteriestand (%)                      |
+| FHEM                                                                                            | Gladys                                                        |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `genericDeviceType` `light`, oder `on`/`off` mit `pct`/`dim`                                    | Lampe: Ein/Aus, Helligkeit                                    |
+| `genericDeviceType` `switch`/`outlet`, oder `on`/`off`                                          | Schalter: Ein/Aus                                             |
+| `genericDeviceType` `blind`, HomeMatic `blindActuator`, oder `up`/`down`/`stop` ohne `on`/`off` | Rollladen: Position (`pct`), Öffnen/Schließen/Stopp           |
+| `desired-temp` (Thermostate)                                                                    | Thermostat-Sollwert, in den Grenzen, die FHEM angibt          |
+| `genericDeviceType` `contact`/`window`/`garage`, `contact`                                      | Öffnungssensor (offen, gekippt: offen)                        |
+| `genericDeviceType` `motion`, Reading `motion`                                                  | Bewegungsmelder                                               |
+| Reading `presence`, PRESENCE- und ROOMMATE-Geräte                                               | Anwesenheitssensor                                            |
+| `genericDeviceType` `lock`, Befehle `lock`/`unlock`                                             | Schloss (standardmäßig nur lesend)                            |
+| Readings `temperature`/`measured-temp`, `humidity`                                              | Temperatur (°C), Luftfeuchtigkeit (%)                         |
+| Readings `pressure`, `co2`, `luminance`/`illuminance`                                           | Luftdruck (hPa), CO2 (ppm), Beleuchtungsstärke (lux)          |
+| Readings `power`, `energy`                                                                      | Leistung (W), Energie (kWh): des Schalters oder eines Zählers |
+| Reading `battery` (`ok`/`low` oder %), `batteryPercent`                                         | Batterie schwach, oder Batteriestand (%)                      |
 
 Ein Befehl wird nur angeboten, wenn FHEM ihn in den Befehlen des Geräts
 aufführt; sonst ist die Funktion nur lesend. Gladys sendet `set <Gerät> on`,
@@ -117,7 +117,10 @@ beliebigen Gerät aus, das FHEM kennt, auch einem nicht hinzugefügten: `on`,
 `off`, `pct 50`, `on-for-timer 300`, eine Szene einer `LightScene`… Nur ein
 `set`: Ein `;` oder geschweifte Klammern werden abgelehnt, eine Szene kann also
 keinen anderen FHEM-Befehl und keinen Perl-Code ausführen. Schlösser,
-Garagentore und Alarmanlagen folgen dem Sicherheitsschalter.
+Garagentore und Alarmanlagen folgen dem Sicherheitsschalter, ebenso eine
+`structure` oder eine `LightScene`, die eines davon enthält. FHEM kann einen
+Befehl trotzdem selbst weitergeben (ein `notify` auf einem Dummy): Das hängt
+von deiner FHEM-Konfiguration ab.
 
 ## Szenen-Beispiele
 

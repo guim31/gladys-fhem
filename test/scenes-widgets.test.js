@@ -78,3 +78,20 @@ test('the widget passes the SDK validation in every state, and reloads the devic
   assert.equal(action.data.message.fr, 'Liste des appareils relue.');
   assert.ok(world.fhem.requests.slice(before).includes('jsonlist2'));
 });
+
+test('send_command: a structure holding a lock follows the security switch', async (t) => {
+  const { createFhem } = await import('./helpers/fakeFhem.js');
+  const fhem = createFhem();
+  fhem.devices.push({
+    Name: 'Maison',
+    PossibleSets: 'on off',
+    Internals: { NAME: 'Maison', TYPE: 'structure', DEF: 'room Lampe_Salon Serrure' },
+    Readings: { state: { Value: 'undefined' } },
+    Attributes: {},
+  });
+  const world = await createWorld({ fhem });
+  t.after(() => world.app.stop());
+  const ack = await world.fake.sceneAction('send_command', { device: 'Maison', command: 'off' });
+  assert.equal(ack.success, false);
+  assert.match(ack.error, /désactivées/);
+});
