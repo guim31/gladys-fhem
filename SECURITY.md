@@ -28,8 +28,15 @@ Gladys before reporting a problem.
 
 ## Scope
 
-In scope: the code of this repository and the Docker image it publishes.
+In scope: the code of this repository and the Docker image it publishes. The
+integration stores nothing in `/data`: its configuration (the FHEMWEB address,
+the optional user name and password) is kept by Gladys and given to the
+container at start-up. It only talks to the FHEM server configured, on the
+local network, over HTTP or HTTPS; the password is never written to the logs,
+and an address holding credentials is refused. The scene action only sends a
+`set` to a device FHEM knows: a `;` (another FHEM command) or braces (Perl) are
+refused, and locks, garage doors and alarms follow the security switch.
 
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+and FHEM and the devices it talks to.

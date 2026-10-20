@@ -1,177 +1,496 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "FHEM",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Bridge to FHEM: import its devices (lights, blinds, sensors…) into Gladys and control them.",
+    "fr": "Pont vers FHEM : importez ses appareils (lampes, volets, capteurs…) dans Gladys et pilotez-les.",
+    "de": "Brücke zu FHEM: Geräte (Lampen, Rollläden, Sensoren…) in Gladys importieren und steuern.",
+    "es": "Puente a FHEM: importe sus dispositivos (luces, persianas, sensores…) en Gladys y contrólelos."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "docker_image": "ghcr.io/guim31/gladys-fhem:1.0.0",
   "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-fhem/main/cover.png",
+  "categories": ["protocols", "lighting", "climate"],
+  "transports": ["local"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "Your FHEM devices in Gladys",
+        "fr": "Vos appareils FHEM dans Gladys",
+        "de": "Deine FHEM-Geräte in Gladys",
+        "es": "Sus dispositivos FHEM en Gladys"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "Gladys reads the devices of your FHEM server through FHEMWEB, its web interface, and follows their changes live. The devices then show up in the Discovery tab: add the ones you want. Set the genericDeviceType attribute in FHEM (light, switch, blind, thermostat, contact, motion…) for the devices Gladys does not recognize.",
+        "fr": "Gladys lit les appareils de votre serveur FHEM par FHEMWEB, son interface web, et suit leurs changements en direct. Les appareils apparaissent ensuite dans l'onglet Découverte : ajoutez ceux que vous voulez. Renseignez l'attribut genericDeviceType dans FHEM (light, switch, blind, thermostat, contact, motion…) pour les appareils que Gladys ne reconnaît pas.",
+        "de": "Gladys liest die Geräte deines FHEM-Servers über FHEMWEB, seine Weboberfläche, und verfolgt ihre Änderungen live. Die Geräte erscheinen dann im Reiter Entdecken: Füge die gewünschten hinzu. Setze in FHEM das Attribut genericDeviceType (light, switch, blind, thermostat, contact, motion…) für Geräte, die Gladys nicht erkennt.",
+        "es": "Gladys lee los dispositivos de su servidor FHEM mediante FHEMWEB, su interfaz web, y sigue sus cambios en directo. Los dispositivos aparecen luego en la pestaña Descubrir: añada los que quiera. Defina el atributo genericDeviceType en FHEM (light, switch, blind, thermostat, contact, motion…) para los dispositivos que Gladys no reconozca."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://wiki.fhem.de/wiki/FHEMWEB",
+          "label": {
+            "en": "FHEMWEB",
+            "fr": "FHEMWEB",
+            "de": "FHEMWEB",
+            "es": "FHEMWEB"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "url",
+      "type": "string",
+      "label": {
+        "en": "Address of FHEMWEB",
+        "fr": "Adresse de FHEMWEB",
+        "de": "Adresse von FHEMWEB",
+        "es": "Dirección de FHEMWEB"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
-    },
-    {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
       "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+        "en": "Its IP address, port and path, as seen from the Gladys machine. Not a .local name, not localhost.",
+        "fr": "Son adresse IP, son port et son chemin, vus depuis la machine de Gladys. Pas de nom en .local, pas localhost.",
+        "de": "IP-Adresse, Port und Pfad, von der Gladys-Maschine aus gesehen. Kein .local-Name, nicht localhost.",
+        "es": "Su dirección IP, puerto y ruta, vistos desde la máquina de Gladys. Sin nombre .local, sin localhost."
       },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
+      "placeholder": {
+        "en": "http://192.168.1.30:8083/fhem",
+        "fr": "http://192.168.1.30:8083/fhem",
+        "de": "http://192.168.1.30:8083/fhem",
+        "es": "http://192.168.1.30:8083/fhem"
+      },
+      "required": true
     },
     {
-      "key": "unit",
-      "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
-      ]
-    },
-    {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "key": "username",
+      "type": "string",
+      "label": {
+        "en": "User name",
+        "fr": "Nom d'utilisateur",
+        "de": "Benutzername",
+        "es": "Nombre de usuario"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Only if FHEMWEB asks for a password (basicAuth of an allowed device).",
+        "fr": "Seulement si FHEMWEB demande un mot de passe (basicAuth d'un appareil allowed).",
+        "de": "Nur wenn FHEMWEB ein Passwort verlangt (basicAuth eines allowed-Geräts).",
+        "es": "Solo si FHEMWEB pide una contraseña (basicAuth de un dispositivo allowed)."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
+      "default": ""
+    },
+    {
+      "key": "password",
+      "type": "secret",
+      "label": {
+        "en": "Password",
+        "fr": "Mot de passe",
+        "de": "Passwort",
+        "es": "Contraseña"
+      },
+      "required": false
+    },
+    {
+      "key": "rooms",
+      "type": "string",
+      "label": {
+        "en": "Only the devices of these rooms",
+        "fr": "Seulement les appareils de ces pièces",
+        "de": "Nur die Geräte dieser Räume",
+        "es": "Solo los dispositivos de estas habitaciones"
+      },
+      "description": {
+        "en": "FHEM rooms (room attribute), separated by commas. Empty: every device.",
+        "fr": "Pièces FHEM (attribut room), séparées par des virgules. Vide : tous les appareils.",
+        "de": "FHEM-Räume (Attribut room), durch Kommas getrennt. Leer: alle Geräte.",
+        "es": "Habitaciones de FHEM (atributo room), separadas por comas. Vacío: todos los dispositivos."
+      },
+      "placeholder": {
+        "en": "Wohnzimmer, Gladys",
+        "fr": "Wohnzimmer, Gladys",
+        "de": "Wohnzimmer, Gladys",
+        "es": "Wohnzimmer, Gladys"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "exclude_devices",
+      "type": "string",
+      "label": {
+        "en": "Devices to leave out",
+        "fr": "Appareils à écarter",
+        "de": "Auszulassende Geräte",
+        "es": "Dispositivos a excluir"
+      },
+      "description": {
+        "en": "FHEM device names, separated by commas; * matches any text. Never imported.",
+        "fr": "Noms d'appareils FHEM, séparés par des virgules ; * remplace n'importe quel texte. Jamais importés.",
+        "de": "FHEM-Gerätenamen, durch Kommas getrennt; * steht für beliebigen Text. Nie importiert.",
+        "es": "Nombres de dispositivos FHEM, separados por comas; * sustituye cualquier texto. Nunca se importan."
+      },
+      "placeholder": {
+        "en": "HM_*, Test_*",
+        "fr": "HM_*, Test_*",
+        "de": "HM_*, Test_*",
+        "es": "HM_*, Test_*"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "allow_security_commands",
+      "type": "boolean",
+      "label": {
+        "en": "Allow commands of locks, garage doors and alarms",
+        "fr": "Autoriser les commandes des serrures, portes de garage et alarmes",
+        "de": "Befehle für Schlösser, Garagentore und Alarmanlagen erlauben",
+        "es": "Permitir comandos de cerraduras, puertas de garaje y alarmas"
+      },
+      "description": {
+        "en": "Off: locks show their state, but Gladys cannot open them, from a device, a scene or a voice assistant.",
+        "fr": "Désactivé : les serrures affichent leur état, mais Gladys ne peut pas les ouvrir, depuis un appareil, une scène ou un assistant vocal.",
+        "de": "Aus: Schlösser zeigen ihren Zustand, aber Gladys kann sie nicht öffnen, über Gerät, Szene oder Sprachassistent.",
+        "es": "Desactivado: las cerraduras muestran su estado, pero Gladys no puede abrirlas, desde un dispositivo, una escena o un asistente de voz."
+      },
+      "required": false,
+      "default": false
+    },
+    {
+      "key": "invert_blinds",
+      "type": "boolean",
+      "label": {
+        "en": "Blinds: 0 % means open in FHEM",
+        "fr": "Volets : 0 % veut dire ouvert dans FHEM",
+        "de": "Rollläden: 0 % heißt offen in FHEM",
+        "es": "Persianas: 0 % significa abierta en FHEM"
+      },
+      "description": {
+        "en": "Gladys expects 100 % for an open blind, like HomeMatic and Shelly in FHEM. Turn on if your blinds count the other way.",
+        "fr": "Gladys attend 100 % pour un volet ouvert, comme HomeMatic et Shelly dans FHEM. Activez si vos volets comptent dans l'autre sens.",
+        "de": "Gladys erwartet 100 % für einen offenen Rollladen, wie HomeMatic und Shelly in FHEM. Schalte es ein, wenn deine Rollläden andersherum zählen.",
+        "es": "Gladys espera 100 % para una persiana abierta, como HomeMatic y Shelly en FHEM. Actívelo si sus persianas cuentan al revés."
+      },
+      "required": false,
+      "default": false
+    },
+    {
+      "key": "sensor_interval",
+      "type": "number",
+      "label": {
+        "en": "Minimum interval between two values of a sensor (s)",
+        "fr": "Intervalle minimum entre deux valeurs d'un capteur (s)",
+        "de": "Mindestabstand zwischen zwei Werten eines Sensors (s)",
+        "es": "Intervalo mínimo entre dos valores de un sensor (s)"
+      },
+      "description": {
+        "en": "A power meter that reports every second is sent to Gladys at this pace. Switches and detectors are never delayed.",
+        "fr": "Un compteur qui publie chaque seconde est transmis à Gladys à ce rythme. Interrupteurs et détecteurs ne sont jamais retardés.",
+        "de": "Ein Zähler, der jede Sekunde meldet, wird in diesem Takt an Gladys gesendet. Schalter und Melder werden nie verzögert.",
+        "es": "Un contador que informa cada segundo se envía a Gladys a este ritmo. Interruptores y detectores nunca se retrasan."
+      },
+      "required": false,
+      "default": 10,
+      "min": 0,
       "max": 3600
+    },
+    {
+      "key": "events",
+      "type": "section",
+      "label": {
+        "en": "Scenes",
+        "fr": "Scènes",
+        "de": "Szenen",
+        "es": "Escenas"
+      },
+      "description": {
+        "en": "Devices listed here start the scene trigger \"FHEM device changed\" at each change of one of their readings, even when they are not added to Gladys (a button, a doorbell, a residents status…).",
+        "fr": "Les appareils listés ici déclenchent le déclencheur de scène « Appareil FHEM modifié » à chaque changement d'une de leurs valeurs (readings), même s'ils ne sont pas ajoutés à Gladys (un bouton, une sonnette, un état des résidents…).",
+        "de": "Hier aufgeführte Geräte lösen bei jeder Änderung eines ihrer Readings den Szenen-Auslöser „FHEM-Gerät geändert“ aus, auch wenn sie nicht zu Gladys hinzugefügt sind (ein Taster, eine Klingel, ein Bewohnerstatus…).",
+        "es": "Los dispositivos indicados aquí activan el disparador de escena «Dispositivo FHEM modificado» en cada cambio de uno de sus readings, aunque no estén añadidos a Gladys (un botón, un timbre, un estado de residentes…)."
+      }
+    },
+    {
+      "key": "watched_devices",
+      "type": "string",
+      "label": {
+        "en": "Devices watched for the scenes",
+        "fr": "Appareils surveillés pour les scènes",
+        "de": "Für Szenen beobachtete Geräte",
+        "es": "Dispositivos vigilados para las escenas"
+      },
+      "description": {
+        "en": "FHEM device names, separated by commas; * matches any text.",
+        "fr": "Noms d'appareils FHEM, séparés par des virgules ; * remplace n'importe quel texte.",
+        "de": "FHEM-Gerätenamen, durch Kommas getrennt; * steht für beliebigen Text.",
+        "es": "Nombres de dispositivos FHEM, separados por comas; * sustituye cualquier texto."
+      },
+      "placeholder": {
+        "en": "Klingel, rr_Alice",
+        "fr": "Klingel, rr_Alice",
+        "de": "Klingel, rr_Alice",
+        "es": "Klingel, rr_Alice"
+      },
+      "required": false,
+      "default": ""
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "label": {
+        "en": "Language of the feature names",
+        "fr": "Langue des noms de fonctionnalités",
+        "de": "Sprache der Funktionsnamen",
+        "es": "Idioma de los nombres de funciones"
+      },
+      "required": false,
+      "default": "fr",
+      "options": [
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
+      "key": "test_connection",
+      "label": {
+        "en": "Test the connection",
+        "fr": "Tester la connexion",
+        "de": "Verbindung testen",
+        "es": "Probar la conexión"
+      },
       "timeout_seconds": 30
-    },
-    {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ]
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "device_changed",
+      "label": {
+        "en": "FHEM device changed",
+        "fr": "Appareil FHEM modifié",
+        "de": "FHEM-Gerät geändert",
+        "es": "Dispositivo FHEM modificado"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "A reading of a watched device (configuration) changed in FHEM.",
+        "fr": "Une valeur (reading) d'un appareil surveillé (configuration) a changé dans FHEM.",
+        "de": "Ein Reading eines beobachteten Geräts (Konfiguration) hat sich in FHEM geändert.",
+        "es": "Un reading de un dispositivo vigilado (configuración) cambió en FHEM."
       },
       "fields": [
         {
           "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "placeholder": {
+            "en": "Klingel",
+            "fr": "Klingel",
+            "de": "Klingel",
+            "es": "Klingel"
+          }
         },
         {
-          "key": "target",
-          "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
-          "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
-          ]
+          "key": "reading",
+          "type": "string",
+          "label": {
+            "en": "Reading (optional)",
+            "fr": "Reading (facultatif)",
+            "de": "Reading (optional)",
+            "es": "Reading (opcional)"
+          },
+          "placeholder": {
+            "en": "state",
+            "fr": "state",
+            "de": "state",
+            "es": "state"
+          }
+        },
+        {
+          "key": "value",
+          "type": "string",
+          "label": {
+            "en": "New value (optional)",
+            "fr": "Nouvelle valeur (facultatif)",
+            "de": "Neuer Wert (optional)",
+            "es": "Nuevo valor (opcional)"
+          },
+          "placeholder": {
+            "en": "pressed",
+            "fr": "pressed",
+            "de": "pressed",
+            "es": "pressed"
+          }
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "device",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          }
+        },
+        {
+          "key": "alias",
+          "type": "string",
+          "label": {
+            "en": "Alias",
+            "fr": "Alias",
+            "de": "Alias",
+            "es": "Alias"
+          }
+        },
+        {
+          "key": "reading",
+          "type": "string",
+          "label": {
+            "en": "Reading",
+            "fr": "Reading",
+            "de": "Reading",
+            "es": "Reading"
+          }
+        },
+        {
+          "key": "value",
+          "type": "string",
+          "label": {
+            "en": "New value",
+            "fr": "Nouvelle valeur",
+            "de": "Neuer Wert",
+            "es": "Nuevo valor"
+          }
+        },
+        {
+          "key": "old_value",
+          "type": "string",
+          "label": {
+            "en": "Previous value",
+            "fr": "Valeur précédente",
+            "de": "Vorheriger Wert",
+            "es": "Valor anterior"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "send_command",
+      "label": {
+        "en": "Send a command to a FHEM device",
+        "fr": "Envoyer une commande à un appareil FHEM",
+        "de": "Befehl an ein FHEM-Gerät senden",
+        "es": "Enviar un comando a un dispositivo FHEM"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "Runs set <device> <command> on any device, even one not added to Gladys: on, off, pct 50, on-for-timer 300…",
+        "fr": "Exécute set <appareil> <commande> sur n'importe quel appareil, même non ajouté à Gladys : on, off, pct 50, on-for-timer 300…",
+        "de": "Führt set <Gerät> <Befehl> auf einem beliebigen Gerät aus, auch einem nicht hinzugefügten: on, off, pct 50, on-for-timer 300…",
+        "es": "Ejecuta set <dispositivo> <comando> en cualquier dispositivo, aunque no esté añadido a Gladys: on, off, pct 50, on-for-timer 300…"
+      },
+      "timeout_seconds": 30,
       "fields": [
         {
           "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
+          "type": "string",
+          "label": {
+            "en": "Device",
+            "fr": "Appareil",
+            "de": "Gerät",
+            "es": "Dispositivo"
+          },
+          "placeholder": {
+            "en": "Lampe_Kueche",
+            "fr": "Lampe_Kueche",
+            "de": "Lampe_Kueche",
+            "es": "Lampe_Kueche"
+          },
           "required": true
-        }
-      ],
-      "outputs": [
+        },
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "command",
+          "type": "string",
+          "label": {
+            "en": "Command",
+            "fr": "Commande",
+            "de": "Befehl",
+            "es": "Comando"
+          },
+          "placeholder": {
+            "en": "on-for-timer 300",
+            "fr": "on-for-timer 300",
+            "de": "on-for-timer 300",
+            "es": "on-for-timer 300"
+          },
+          "required": true
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "status",
+      "label": {
+        "en": "FHEM",
+        "fr": "FHEM",
+        "de": "FHEM",
+        "es": "FHEM"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Connection to FHEM, live updates, devices offered and added.",
+        "fr": "Connexion à FHEM, mises à jour en direct, appareils proposés et ajoutés.",
+        "de": "Verbindung zu FHEM, Live-Aktualisierung, angebotene und hinzugefügte Geräte.",
+        "es": "Conexión a FHEM, actualizaciones en directo, dispositivos ofrecidos y añadidos."
+      },
+      "icon": "home",
+      "action_timeout_seconds": 30
     }
   ]
 }

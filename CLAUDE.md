@@ -16,8 +16,8 @@ its only runtime dependency. It started from the official JavaScript template.
 ```bash
 npm install
 npm test                                  # node --test, the built-in runner
-node --test test/devices.test.js          # one file
-node --test --test-name-pattern "plug"    # tests whose name matches
+node --test test/bridge.test.js           # one file
+node --test --test-name-pattern "lock"    # tests whose name matches
 npm run lint                              # ESLint
 npm run format:check                      # Prettier, as the CI runs it
 npm run format                            # Prettier, fix in place
@@ -32,15 +32,20 @@ pushing.
 
 ```
 index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
-src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+src/app.js                        every handler of the manifest, on the bridge
+src/bridge.js                     the FHEM connection: inventory, inform stream, polling, commands
+src/fhem/client.js                FHEMWEB (fetch): CSRF token, jsonlist2, set, the inform stream
+src/inventory.js                  FHEM devices -> Gladys devices, routing tables (pure)
+src/mapping.js                    one FHEM device -> its features: read, write (pure)
+src/publisher.js                  states sent to Gladys within 250 per minute, 12 h heartbeat
+src/scenes.js                     scene action send_command and its guards
+src/widgets.js                    dashboard widget `status`
+src/texts.js                      every text of the container, in four languages
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
 gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
-test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (en and fr mandatory)
+test/                             node --test, against the SDK's fake Gladys and a fake FHEMWEB
+test/fixtures/fhem/               jsonlist2 of a real FHEM 6.4 (dummy devices)
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -70,8 +75,10 @@ test/                             node --test, against the SDK's fake Gladys (in
   `type: "provider"`: 5.1.0). `test/manifest.test.js` ties the manifest to the
   code (defaults, action, scene and widget handlers): change both sides
   together.
-- **User-facing text** is bilingual (English and French): action messages,
-  manifest texts, and `docs/en.md` / `docs/fr.md`, kept in sync.
+- **User-facing text** is in four languages (English, French, German with
+  "du", Spanish with "usted"): action messages, manifest texts, feature names,
+  widget, and `docs/{en,fr,de,es}.md` with the same sections.
+  `test/i18n.test.js` checks it.
 - **Style.** Prettier formats, ESLint catches mistakes. Comments explain why,
   in English. Tests never touch the network.
 
@@ -233,3 +240,34 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## FHEM (propre à cette intégration)
+
+Vérifié contre `fhem/fhem` (FHEM 6.4, révision 31759) en Docker, appareils `dummy` créés par
+`cmd=define …` (voir `test/fixtures/fhem/`), et le pont lancé dans le conteneur verrouillé contre ce FHEM.
+
+- **Jeton CSRF** : lu dans l'en-tête `X-FHEM-csrfToken` de n'importe quelle réponse (`?XHR=1`). **Toute** commande
+  l'exige, lecture comprise (`jsonlist2` sans jeton → 400 au corps vide). Il change au redémarrage de FHEM : un 400
+  fait relire le jeton et retenter une fois. Absent si l'attribut `csrfToken` vaut `none`.
+- **Erreurs** : `set` répond toujours 200 ; vide = succès, sinon le texte de l'erreur (`Please define X first`,
+  `Unknown argument …, choose one of …`). Un `dummy` accepte pourtant n'importe quel argument malgré son `setList`.
+  Authentification basique (appareil `allowed` + `basicAuth`) → 401.
+- **`jsonlist2`** : `Results[]` avec `Name`, `PossibleSets` (`on off pct:slider,0,1,100`), `Internals` (`TYPE`,
+  `FUUID`, `STATE`), `Readings` (`{ Value, Time }`), `Attributes`. La révision est dans `global` →
+  `Attributes.version` (`fhem.pl:31759/2026-10-10`) ; le `TYPE` de `global` est `Global`.
+- **`genericDeviceType`** n'existe que si un module le déclare (alexa, gassistant, homebridgeMapping) ou par
+  `attr global userattr genericDeviceType:…` ; sans cela, `attr X genericDeviceType` est refusé.
+- **Flux `inform`** (`type=status;filter=.*;since=null;fmt=JSON`) : réponse sans longueur, une ligne JSON par
+  évènement : `["Dev","STATE","<html>"]`, `["Dev-reading","valeur","valeur"]`, `["Dev-reading-ts",…]`,
+  `["global-DEFINED","Nom",…]` (`DELETED`, `RENAMED`…), `["Dev-a-room","…"]` pour un attribut, et des lignes
+  `#FHEMWEB:…` à ignorer. **Rien n'est envoyé quand rien ne change** (200 s de silence observés) : pas de chien de
+  garde au silence possible, d'où la réouverture toutes les 15 min avec relecture de la liste. Un nom d'appareil
+  FHEM ne contient jamais de `-` : le premier tiret sépare le reading.
+- Un `dummy` met un `set <x> <v>` dans `state` (`pct 30`), sauf si `x` est dans son attribut `readingList`.
+- **Sécurité de l'action de scène** : `cmd=` exécute n'importe quelle commande FHEM, et `;` les enchaîne, `{…}`
+  exécute du Perl ; un nom d'appareil qui n'existe pas est pris comme expression régulière (devspec). D'où : nom
+  `[A-Za-z0-9._]`, appareil connu de la dernière liste, ni `;` ni accolades ni retour à la ligne.
+- Choix de conception : un appareil Gladys par appareil FHEM, identifiant tiré du **FUUID** (survit à un
+  `rename`), sinon du nom ; fonctionnalités `<reading>-<rôle>`. `pct` 100 = volet ouvert (HomeMatic, Shelly,
+  homebridge), option `invert_blinds`. Unités supposées : W, kWh, °C. Serrures, portes de garage et alarmes en
+  lecture seule sauf option ; une porte de garage n'est qu'un détecteur d'ouverture.
