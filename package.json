@@ -1,6 +1,6 @@
 {
   "name": "gladys-fhem",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Gladys Assistant external integration bridging FHEM: import its devices into Gladys and control them through FHEMWEB and its live updates.",
   "type": "module",
